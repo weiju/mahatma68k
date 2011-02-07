@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mahatma68k</groupId>
+  <artifactId>cpuexample</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <!-- General information -->
+  <name>Cpu test</name>
+  <description>An example program to demonstrate use of Mahatma68k</description>
+  <inceptionYear>2009</inceptionYear>
+  <licenses>
+    <license>
+      <name>New BSD</name>
+      <distribution>repo</distribution>
+			<comments>New BSD License</comments>
+    </license>
+  </licenses>
+
+  <!-- Properties -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <showDeprecation>false</showDeprecation>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+					<version>1.1.1</version>
+        </plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>TestCpu</mainClass>
+        </configuration>
+      </plugin>
+		</plugins>
+	</build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mahatma68k</groupId>
+      <artifactId>mahatma68k</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

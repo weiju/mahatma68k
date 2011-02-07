@@ -1,0 +1,3 @@
+potentially all shift operations that operate on words shorter than
+an int are wrong, because it tries to work on a signed value, but the
+unsigned value is required. see LSR how to fix that problem

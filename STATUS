@@ -1,0 +1,117 @@
+Status:
+------
+
+- disassembly
+- timing information
+- supports interrupts
+
+Instructions:
+
+a) Std
+01. move - move <ea>,<ea>; movea (complete)
+02. add - add <ea>,<dn>; adda; add <dn>,<ea> (complete)
+03. and - and <ea>,<dn>; add <dn>,<ea> (complete)
+04. cmp - cmp, cmpa (complete)
+05. divs
+06. divu - complete (timing should be done exact)
+07. eor - complete
+08. muls - complete
+09. mulu - complete (timing should be done exact)
+10. or - or <dn>,<ea>;or <ea>,<dn> (complete)
+11. sub - suba <ea>,<an>;sub <ea>,<dn>;sub <dn>,<ea> (complete)
+b) Imm
+12. addi - complete
+13. addq - complete
+14. andi - complete
+15. cmpi - complete
+16. eori - complete
+17. moveq - complete
+18. ori - complete
+19. subi - complete
+20. subq - complete
+21. clr - complete
+22. nbcd
+23. neg - complete
+24. negx - complete
+25. not - complete
+26. scc - complete
+27. tas - complete
+28. tst - complete
+c) Shift/Rotate
+29. asl/asr - asl <dx>,<dy>;asl <im>,<dn>;asr <dx>,<dy>;asr <dx>,<dy> (to be completed)
+30. lsl/lsr - lsr <im>,<dn>;lsl <im>,<dn> (to be completed)
+31. rol/ror
+32. roxl/roxr
+d) Jump/Branch etc
+33. jmp - complete
+34. jsr - complete
+35. lea - complete
+36. pea - complete
+37. movem - movem mem -> register, movem register -> mem (complete)
+e) Bit manip
+38. bchg - complete
+39. bclr - complete
+40. bset - bset <dn>,<ea>;bset <im>,<ea> (complete)
+41. btst - btst #<data>,<ea>;btst <dn>,<ea> (complete)
+f) Other
+42. addx
+43. cmpm - complete
+44. subx
+45. abcd
+46. sbcd
+47. Bcc - complete
+48. bra - complete
+49. bsr - complete
+50. DBcc - complete
+51. chk
+52. trap - complete
+53. trapv - complete
+54. movep
+55. andi to ccr - complete
+56. andi to sr - complete
+57. eori to ccr - complete
+58. eori to sr - complete
+59. exg - complete
+60. ext - complete
+61. link - complete
+62. move to ccr - complete
+63. move to sr - complete
+64. move from sr - complete
+65. move to usp - complete
+66. move from usp - complete
+67. nop - complete
+68. ori to ccr - complete
+69. ori to sr - complete
+70. reset - complete
+71. rte - complete
+72. rtr - complete
+73. rts - complete
+74. stop
+75. swap - complete
+76. unlk - complete
+
+Additional (Musashi might be right or not, need to verify this, until
+then, this is just a reminder):
+
+- detected an error in musashi disassembler: 0x0c51 is cmpi, correctly
+	executed, but wrongly displayed
+- detected an error in musashi: privilegeException uses wrong pc, patched
+  to pc - 2, Mahatma68K does it correctly
+- timing of suba seems to be off in musashi (Mahatma is following UM)
+
+Known issues: 
+
+- tracing not supported
+- no instruction prefetch
+
+TODO
+-----
+
+- implement stop, rol (used in Kickstart 1.2)
+- implement divs, chk, addx, subx, movep (not used in Kickstart 1.2)
+- implement abcd, nbcd, sbcd (not likely to be used in many programs)
+- change moveq decoding to be done in standard code generation scheme
+- disassembly: negative index should  be output as -<index>
+- divu/divs timing should use the "exact algorithm", not just worst case
+	(low priority, since only 10% difference between best and worst case)
+

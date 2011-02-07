@@ -1,0 +1,11 @@
+This is a simple example program that can be run after the mahatma
+jar was installed in the local maven repository (see README of main
+project).
+It shows the general usage of the emulator class.
+
+Build instructions:
+-------------------
+
+mvn compile
+mvn exec:java
+

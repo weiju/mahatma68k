@@ -31,7 +31,7 @@
 # only differ in their operator size
 # It also contains the generation functionality for the instructions
 # that do not fit the standard scheme
-require 'mahatmarb/timing'
+require_relative './timing.rb'
 #######################################################################
 ##### Mappings to initialization functions
 #######################################################################

@@ -35,10 +35,10 @@
 # entirely identified by the first 16-bit word.
 # The code generator primarily builds two main tables of the size 2^16:
 # The code table and the timing table.
-require 'mahatmarb/m68k'
-require 'mahatmarb/timing'
-require 'mahatmarb/codegen'
-require 'mahatmarb/disassemble'
+require_relative 'mahatmarb/m68k.rb'
+require_relative 'mahatmarb/timing.rb'
+require_relative 'mahatmarb/codegen.rb'
+require_relative 'mahatmarb/disassemble.rb'
 
 ######################################################################
 #### DEFINITIONS

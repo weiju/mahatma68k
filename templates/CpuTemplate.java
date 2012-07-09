@@ -158,8 +158,8 @@ public class Cpu {
 			usedInstructions, (int) (endTime - startTime));
   }
 
-    public boolean intercept_jsr(int areg, int displacement) {
-        System.out.printf("Intercepting JSR instruction on %d(a%d)\n", displacement, areg);
+    public boolean intercept_jsr(int newpc) {
+        System.out.printf("Intercepting JSR instruction to $%04x\n", newpc);
         return false;
     }
 

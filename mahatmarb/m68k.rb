@@ -597,17 +597,11 @@ INSTR_CODE = {
            "ENDIF"
           ],
   :jmp       => ["pc = GET_EFFECTIVE_ADDRESS;"],
-  :jsr       => ["IF_EAMODE(ad)",
-                 "int anum = getEffAddrRegnum();",
-                 "int displacement = mem.readShort(pc);",
-                 "if (!intercept_jsr(anum, displacement)) {",
-                 "ENDIF",
-                 "int jumpLabel = GET_EFFECTIVE_ADDRESS;",
-                 "pushLong(pc);",
-                 "pc = jumpLabel;",
-                 "IF_EAMODE(ad)",
-                 "} else GET_EFFECTIVE_ADDRESS;",
-                 "ENDIF"
+  :jsr       => ["int jumpLabel = GET_EFFECTIVE_ADDRESS;",
+                 "if (!intercept_jsr(jumpLabel)) {",
+                 "  pushLong(pc);",
+                 "  pc = jumpLabel;",
+                 "}"
                 ],
   :lea       => ["SET_ADDRESS_REGISTER(GET_EFFECTIVE_ADDRESS);"],
   :link      => ["pushLong(getAddressRegisterValueL(getEffAddrRegnum()));",

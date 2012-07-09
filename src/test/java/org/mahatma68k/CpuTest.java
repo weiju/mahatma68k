@@ -58,6 +58,18 @@ public class CpuTest {
   }
 
   // **********************************************************************
+  // **** MOVEA
+  // **********************************************************************
+	@Test public void testMovea4a6() { // movea.l #4.w, a6
+      byte[] buffer = { (byte) 0x2c, (byte) 0x78, (byte) 0x00, (byte) 0x04, 0x01, 0x02, 0x03, 0x04 };
+    cpu.setAddressSpace(createMemory(buffer));
+    Cpu.Instruction movea;
+    movea = cpu.nextInstruction();
+    movea.execute();
+    assertEquals(0x01020304, cpu.getAddressRegisterValue(6));
+  }
+
+  // **********************************************************************
   // **** SUBQ
   // **********************************************************************
 	@Test public void testSubqL1d0() { // subq.l #1, d0
@@ -188,4 +200,3 @@ public class CpuTest {
     assertFlagsCleared(cpu.getSR(), Cpu.SR_Z | Cpu.SR_V);
   }
 }
-

@@ -133,7 +133,7 @@ public class CpuTest {
     sub_eadn_b.execute();
     assertEquals(0x1234fffe, cpu.getDataRegisterValue(1));
     assertFlagsSet(cpu.getSR(), Cpu.SR_N);
-	}
+  }
   // **********************************************************************
   // ***** ADD
   // ***********************
@@ -188,6 +188,7 @@ public class CpuTest {
     assertFlagsSet(cpu.getSR(), Cpu.SR_X | Cpu.SR_C | Cpu.SR_N);
     assertFlagsCleared(cpu.getSR(), Cpu.SR_Z | Cpu.SR_V);
   }
+
   @Test public void testLsl_w_d1() { // lsl.w #4, d1
     byte[] buffer = { (byte) 0xe9, (byte) 0x49 };
     cpu.setAddressSpace(createMemory(buffer));

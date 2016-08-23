@@ -122,10 +122,10 @@ end
 def make_tostring_add_val(out_spec, eamode, eamode_ext, pos)
   result = ", val#{pos}"
   if (out_spec == :effaddr and (eamode == :ad or eamode == :px)) or
-      (out_spec == :effaddr_rev and eamode_ext == :ad) then
+    (out_spec == :effaddr_rev and eamode_ext == :ad) then
     result += ", val#{pos}_1"
   elsif (out_spec == :effaddr and eamode == :ax) or
-      (out_spec == :effaddr_rev and eamode_ext == :ax) then
+       (out_spec == :effaddr_rev and eamode_ext == :ax) then
     result += ", val#{pos}_1, val#{pos}_2"
   end
   result
@@ -175,14 +175,14 @@ def make_index_params(result, valname, eamode, is_ext, indent_level)
   if eamode == :ax then
     result += " " * indent_level
     result += "  String #{valname}_1 = String.format(\"%d\", " +
-      "getEffAddr#{ext}Regnum());\n"
+              "getEffAddr#{ext}Regnum());\n"
     result += " " * indent_level
     result += "  String #{valname}_2 = String.format(\"%s%d.%s\", " +
-      "reg#{ext}, regnum#{ext}, lstr#{ext});\n"
+              "reg#{ext}, regnum#{ext}, lstr#{ext});\n"
   elsif eamode == :px
     result += " " * indent_level
     result += "  String #{valname}_1 = String.format(\"%s%d.%s\", " +
-      "reg#{ext}, regnum#{ext}, lstr#{ext});\n"
+              "reg#{ext}, regnum#{ext}, lstr#{ext});\n"
   end
 end
 
@@ -191,17 +191,17 @@ def make_displacement_params(result, valname, is_ext, indent_level)
   if is_ext then ext = "Ext" end
   result += " " * indent_level
   result += "  String #{valname} = formatSigned(getSignExtended16(" +
-    "mem.readShort(pc))); pc += 2;\n"
+            "mem.readShort(pc))); pc += 2;\n"
   result += " " * indent_level
   result += "  String #{valname}_1 = String.format(\"%d\", getEffAddr#{ext}Regnum());\n"
   result
 end
 
 EAMODE_FORMAT_STRING = {:dn => 'd%s', :an => 'a%s', :al => '%s.l',
-  :aw => '%s.w', :im => '%s', :pd => '%s(PC)', :ai => '(a%s)',
-  :ad => '%s(a%s)', :ap => '(a%s)+', :ar => '-(a%s)',
-  :ax => '%s(a%s, $%s)', :px => '%s(PC, $%s)'
-}
+                        :aw => '%s.w', :im => '%s', :pd => '%s(PC)', :ai => '(a%s)',
+                        :ad => '%s(a%s)', :ap => '(a%s)+', :ar => '-(a%s)',
+                        :ax => '%s(a%s, $%s)', :px => '%s(PC, $%s)'
+                       }
 
 def format_str_for_arg(mnemonic, arg, eamode, eamode_ext)
   if mnemonic == :cmpm then
@@ -211,7 +211,7 @@ def format_str_for_arg(mnemonic, arg, eamode, eamode_ext)
   elsif arg == :dregnum or arg == :effaddr_dregnum
     return "d%s"
   elsif arg == :data or arg == :im_data or arg == :displacement or
-      arg == :trap_vector
+       arg == :trap_vector
     return '#$%s'
   elsif arg == :reglist or arg == :usp or arg == :sr or arg == :ccr
     return '%s'

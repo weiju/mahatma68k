@@ -94,20 +94,20 @@ def eaval_getter_s(eamode)
 end
 
 CONST_HELPER_LINES = [
-# MSB/LSB CHECK
-"private boolean msbSetB(int value) { return (value & 0x80) == 0x80; }",
-"private boolean msbClearB(int value) { return (value & 0x80) == 0; }",
-"private boolean msbSetW(int value) { return (value & 0x8000) == 0x8000; }",
-"private boolean msbClearW(int value) { return (value & 0x8000) == 0; }",
-"private boolean msbSetL(int value) { return (value & 0x80000000) == 0x80000000; }",
-"private boolean msbClearL(int value) { return (value & 0x80000000) == 0; }",
-"private boolean lsbSet(int value) { return (value & 1) == 1; }",
-"private boolean lsbClear(int value) { return (value & 1) == 0; }",
+  # MSB/LSB CHECK
+  "private boolean msbSetB(int value) { return (value & 0x80) == 0x80; }",
+  "private boolean msbClearB(int value) { return (value & 0x80) == 0; }",
+  "private boolean msbSetW(int value) { return (value & 0x8000) == 0x8000; }",
+  "private boolean msbClearW(int value) { return (value & 0x8000) == 0; }",
+  "private boolean msbSetL(int value) { return (value & 0x80000000) == 0x80000000; }",
+  "private boolean msbClearL(int value) { return (value & 0x80000000) == 0; }",
+  "private boolean lsbSet(int value) { return (value & 1) == 1; }",
+  "private boolean lsbClear(int value) { return (value & 1) == 0; }",
 
-# ZERO CHECK
-"private boolean isZeroB(int value) { return (value & 0xff) == 0; }",
-"private boolean isZeroW(int value) { return (value & 0xffff) == 0; }",
-"private boolean isZeroL(int value) { return value == 0; }",
+  # ZERO CHECK
+  "private boolean isZeroB(int value) { return (value & 0xff) == 0; }",
+  "private boolean isZeroW(int value) { return (value & 0xffff) == 0; }",
+  "private boolean isZeroL(int value) { return value == 0; }",
 ]
 
 #######################################################################
@@ -142,20 +142,20 @@ SET_ADD_CC_CODE =
   "        msbSet$SIZE(src) && msbClear$SIZE(result)) setFlag(SR_C);\n" +
   "    if (isCarrySet()) setExtendedFlag();" +
   "  }\n"
-SUBTRACT = 
+SUBTRACT =
   "  private int subtract$SIZE(int src, int dest) {\n" +
   "    int result = dest - src;\n" +
   "    setSubtractConditionCodes$SIZE(src, dest, result);\n" +
   "    return result;\n" +
   "  }\n"
-ADD = 
+ADD =
   "  private int add$SIZE(int src, int dest) {\n" +
   "    clearFlags(SR_X, SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = src + dest;\n" +
   "    setAddConditionCodes$SIZE(src, dest, result);\n" +
   "    return result;\n" +
   "  }\n"
-NEG = 
+NEG =
   "  private int neg$SIZE(int dest) {\n" +
   "    clearFlags(SR_X, SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = -dest;\n" +
@@ -166,7 +166,7 @@ NEG =
   "    if (isCarrySet()) setExtendedFlag();\n" +
   "    return result;\n" +
   "  }\n"
-NEGX = 
+NEGX =
   "  private int negx$SIZE(int dest) {\n" +
   # note that Zero-flag calculation is different here:
   # clear if result is non-zero, otherwise leave unchanged
@@ -179,7 +179,7 @@ NEGX =
   "    if (isCarrySet()) setExtendedFlag();\n" +
   "    return result;\n" +
   "  }\n"
-NOT = 
+NOT =
   "  private int not$SIZE(int dest) {\n" +
   "    clearFlags(SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = ~dest;\n" +
@@ -187,7 +187,7 @@ NOT =
   "    if (isZero$SIZE(result)) setFlag(SR_Z);\n" +
   "    return result;\n" +
   "  }\n"
-OR = 
+OR =
   "  private int or$SIZE(int src, int dest) {\n" +
   "    clearFlags(SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = src | dest;\n" +
@@ -195,7 +195,7 @@ OR =
   "    if (isZero$SIZE(result)) setFlag(SR_Z);\n" +
   "    return result;\n" +
   "  }\n"
-AND = 
+AND =
   "  private int and$SIZE(int src, int dest) {\n" +
   "    clearFlags(SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = src & dest;\n" +
@@ -203,7 +203,7 @@ AND =
   "    if (isZero$SIZE(result)) setFlag(SR_Z);\n" +
   "    return result;\n" +
   "  }\n"
-EOR = 
+EOR =
   "  private int eor$SIZE(int src, int dest) {\n" +
   "    clearFlags(SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = src ^ dest;\n" +
@@ -211,7 +211,7 @@ EOR =
   "    if (isZero$SIZE(result)) setFlag(SR_Z);\n" +
   "    return result;\n" +
   "  }\n"
-LSR = 
+LSR =
   "  private int lsr$SIZE(int dest, int n) {\n" +
   "    clearFlags(SR_N, SR_Z, SR_V, SR_C);\n" +
   "    int result = dest >>> n;\n" +
@@ -322,7 +322,7 @@ def substitute_set_effaddr_value(instr_code, size, eamode, is_ext)
     set_var_b  = 'SET_EFFADDR_EXT_VALUE_B'
     get_reg    = 'getEffAddrExtRegnum'
   else
-    set_regexps = [ /(\SET_EFFADDR_VALUE)\((.*)\)/, 
+    set_regexps = [ /(\SET_EFFADDR_VALUE)\((.*)\)/,
                     /(\SET_EFFADDR_VALUE_L)\((.*)\)/,
                     /(\SET_EFFADDR_VALUE_W)\((.*)\)/,
                     /(\SET_EFFADDR_VALUE_B)\((.*)\)/ ]
@@ -332,6 +332,7 @@ def substitute_set_effaddr_value(instr_code, size, eamode, is_ext)
     set_var_b  = 'SET_EFFADDR_VALUE_B'
     get_reg    = 'getEffAddrRegnum'
   end
+
   # we currently need two subtitute actions for effective address
   # setters: the first rearranges the argument list, the second
   # sets the method name
@@ -358,6 +359,7 @@ end
 OPERAND_SIZE = { :b => 1, :w => 2, :l => 4 }
 DATA_TYPE    = { :b => 'Byte', :w => 'Short', :l => 'Long' }
 AND_MASK     = { :b => '0xff', :w => '0xffff', :l => '0xffffffff'}
+
 def substitute_code_vars(instr_row, size, eamode, eamode_ext)
   size_char = size.to_s.upcase
   instr_code =
@@ -478,6 +480,7 @@ def make_dbcc_instruction(instr_template, indent_level)
                                ALL_CONDITION_CODES, num_cycles_body,
                                to_str, indent_level)
 end
+
 def make_bcc_instruction(instr_template, indent_level)
   to_str  = "      int oldpc = pc;\n"
   to_str += "      int label = oldpc + getDisplacement();\n"
@@ -491,6 +494,7 @@ def make_bcc_instruction(instr_template, indent_level)
   make_xcc_instruction_generic(instr_template, :bcc, 'b', BCC_CONDITION_CODES,
                                num_cycles_body, to_str, indent_level)
 end
+
 # Scc is another "one-off" instruction, where we reuse various helpers
 # from the standard generator. Condition codes are too rare so we do
 # not integrate them in the standard generator
@@ -559,6 +563,7 @@ def exg_reg_format(opmode)
     return 'd%d', 'a%d'
   end
 end
+
 def exg_regtypes(opmode)
   if opmode == :dd then
     return 'DataRegister', 'DataRegister'
@@ -662,36 +667,36 @@ end
 SPECIAL_CYCLE_BODIES = {
   :asl_dxdy => {
     :bw => 'return 6 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);',
-     :l => 'return 8 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);'
+    :l => 'return 8 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);'
   },
   :asl_imdn => {
     :bw => 'return 6 + 2 * getDataValue();',
-     :l => 'return 8 + 2 * getDataValue();'
+    :l => 'return 8 + 2 * getDataValue();'
   },
   :asr_dxdy => {
     :bw => 'return 6 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);',
-     :l => 'return 8 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);'
+    :l => 'return 8 + 2 * (getDataRegisterValueL(getRegnum()) & 0x3f);'
   },
   :asr_imdn => {
     :bw => 'return 6 + 2 * getDataValue();',
-     :l => 'return 8 + 2 * getDataValue();'
+    :l => 'return 8 + 2 * getDataValue();'
   },
   :lsl_imdn => {
     :bw => 'return 6 + 2 * getDataValue();',
-     :l => 'return 8 + 2 * getDataValue();'
+    :l => 'return 8 + 2 * getDataValue();'
   },
   :lsr_imdn => {
     :bw => 'return 6 + 2 * getDataValue();',
-     :l => 'return 8 + 2 * getDataValue();'
+    :l => 'return 8 + 2 * getDataValue();'
   }
 }
 
 FULL_CYCLE_BODIES = {
   :trapv => "return isOverflowSet() ? 34 : 4;",
   :divu  => "\n      int oldpc = pc;\n" +
-    "      int divisor = GET_EFFADDR_VALUE;\n" +
-    "      pc = oldpc;\n" +
-    "      return divisor == 0 ? 38 + EA_TIME : 140;\n  "
+            "      int divisor = GET_EFFADDR_VALUE;\n" +
+            "      pc = oldpc;\n" +
+            "      return divisor == 0 ? 38 + EA_TIME : 140;\n  "
 }
 
 def has_cycle_body(mnemonic)
@@ -729,16 +734,16 @@ def num_cycles_code(mnemonic, size, eamode, eamode_ext)
     return "return isSupervisorMode() ? #{num_cycles} : 34;"
   elsif mnemonic == :movem_ealistw
     return "int reglistMask = mem.readShort(decodePc + 2); " +
-      "return #{MOVEM_MEMREG_CYCLES[:w][eamode]};"
+           "return #{MOVEM_MEMREG_CYCLES[:w][eamode]};"
   elsif mnemonic == :movem_ealistl
     return "int reglistMask = mem.readShort(decodePc + 2); " +
-      "return #{MOVEM_MEMREG_CYCLES[:l][eamode]};"
+           "return #{MOVEM_MEMREG_CYCLES[:l][eamode]};"
   elsif mnemonic == :movem_listeaw
     return "int reglistMask = mem.readShort(decodePc + 2); " +
-      "return #{MOVEM_REGMEM_CYCLES[:w][eamode]};"
+           "return #{MOVEM_REGMEM_CYCLES[:w][eamode]};"
   elsif mnemonic == :movem_listeal
     return "int reglistMask = mem.readShort(decodePc + 2); " +
-      "return #{MOVEM_REGMEM_CYCLES[:l][eamode]};"
+           "return #{MOVEM_REGMEM_CYCLES[:l][eamode]};"
   else
     num_cycles = calc_cycles(mnemonic, size, eamode, eamode_ext)
     return "return #{num_cycles};"
@@ -772,7 +777,7 @@ def eamode_num_value(eamode, reverse = false)
   eamode_value = EAMODE_PATTERNS[eamode]
   if eamode_value == 7 then
     eamode_value = ((eamode_value & 0xff) << 3) |
-      EAMODE_SPECIAL_REGNUM[eamode]
+                   EAMODE_SPECIAL_REGNUM[eamode]
   else
     eamode_value = ((eamode_value & 0xff) << 3) & 0x38
   end
@@ -812,7 +817,7 @@ def make_instr_array(spec, size, eamode, indent_level, eamode_ext)
   end
   size_num = calc_size_num(spec, size)
   result += "#{VARPATTERNS_TO_INIT_FUNC[spec.varpatterns]}(#{func_name}, " +
-    "#{spec.base_value}, #{size_num}, #{eamode_value}, " +
-    "#{eamode_ext_value});\n"
+            "#{spec.base_value}, #{size_num}, #{eamode_value}, " +
+            "#{eamode_ext_value});\n"
   result
 end

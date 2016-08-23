@@ -1,10 +1,12 @@
-Mahatma68k is a Motorola 68000 emulator library written in Java and Ruby.
+# Mahatma68k is a Motorola 68000 emulator library written in Java and Ruby.
+
+## Introduction
 
 "Mahatma" means "Great Soul", which fits well to the fact that the 68000
 used to be power some of the greatest computers of all time: e.g.
 Amiga, Atari ST, Apple Macintosh, SGI IRIS, NeXT... These all were
 considered dream machines in the mid-eighties, before the rise of the
-PC as we know it today. 
+PC as we know it today.
 
 I have to admit it - I always loved 680x0 powered computers, they had
 personality and soul, something I miss in today's machines, which
@@ -20,8 +22,7 @@ community.
 
 - Wei-ju Wu, September 9, 2009 (9/9/09)
 
-Building
---------
+## Building
 
 It is assumed that you have Ruby and Maven 2 installed on your machine.
 There is no maven plugin to call the generator and it will therefore

@@ -43,7 +43,7 @@ require_relative 'mahatmarb/disassemble.rb'
 ######################################################################
 #### DEFINITIONS
 ######################################################################
-TEMPLATE    = "templates/CpuTemplate.java"
+CPU_TEMPLATE    = "templates/CpuTemplate.java"
 INSTRUCTION_TEMPLATE = "templates/InstructionTemplate.java"
 SLIM_INSTRUCTION_TEMPLATE = "templates/InstructionTemplateSlim.java"
 OUTPUT_FILE = "src/main/java/org/mahatma68k/Cpu.java"
@@ -55,18 +55,20 @@ class InstructionTableInitializer
   def initialize
     @init_instr_table = "private void initInstructionTable() {\n"
   end
+
   def process(instr_spec, size, eamode, indent, eamode_ext)
     @init_instr_table += make_instr_array(instr_spec, size, eamode,
                                           indent, eamode_ext)
   end
+
   def process_special_instructions
     # Bcc instructions, need to iterate over 8bit displacements and
     # condition codes
     BCC_CONDITION_CODES.each do |cc|
       @init_instr_table += " " * 4
       @init_instr_table += "setInstrToTableForDisplacement(b#{cc.to_s}," +
-        " 0x6000 | (#{COND_CODE_NUM[cc]} << 8), -1, -1, -1);\n"
-#      @init_instr_table += "setBccToTable(b#{cc.to_s}, #{COND_CODE_NUM[cc]});\n"
+                           " 0x6000 | (#{COND_CODE_NUM[cc]} << 8), -1, -1, -1);\n"
+      # @init_instr_table += "setBccToTable(b#{cc.to_s}, #{COND_CODE_NUM[cc]});\n"
     end
     ALL_CONDITION_CODES.each do |cc|
       @init_instr_table += " " * 4
@@ -77,7 +79,7 @@ class InstructionTableInitializer
         eamode_value = eamode_num_value(eamode)
         @init_instr_table += " " * 4
         @init_instr_table += "setSccToTable(s#{cc.to_s}_#{eamode.to_s}, " +
-          "#{COND_CODE_NUM[cc]}, #{eamode_value});\n"
+                             "#{COND_CODE_NUM[cc]}, #{eamode_value});\n"
       end
     end
     @init_instr_table += " " * 4
@@ -85,9 +87,10 @@ class InstructionTableInitializer
     EXG_OPMODES.each do |opmode|
       @init_instr_table += " " * 4
       @init_instr_table += "setExgToTable(exg_#{opmode}, " +
-        "#{EXG_OPMODE_NUMS[opmode]});\n"
+                           "#{EXG_OPMODE_NUMS[opmode]});\n"
     end
   end
+
   def to_s
     @init_instr_table += "  }\n"
     @init_instr_table
@@ -98,14 +101,17 @@ end
 ##### Creator for instructions
 #######################################################################
 class InstructionCreator
+
   def initialize(instr_template)
     @instr_objects = ""
     @instr_template = instr_template
   end
+
   def process(instr_spec, size, eamode, indent, eamode_ext)
     @instr_objects += make_instruction(@instr_template, instr_spec, size,
                                        eamode, indent, eamode_ext)
   end
+
   def process_special_instructions
     # generate branch objects
     @instr_objects += make_bcc_instruction(@instr_template, 2)
@@ -114,6 +120,7 @@ class InstructionCreator
     @instr_objects += make_exg_instruction(@instr_template, 2)
     @instr_objects += make_scc_instruction(@instr_template, 2)
   end
+
   def to_s
     @instr_objects
   end
@@ -134,12 +141,12 @@ def process_instr_specs(instr_specs, processor)
               processor.process(instr_spec, size, eamode, 4, eamode_ext)
             end
           else
-              processor.process(instr_spec, size, eamode, 4, nil)
+            processor.process(instr_spec, size, eamode, 4, nil)
           end
         end
       end
     elsif instr_spec.eamodes.length == 0 &&
-        instr_spec.size.instance_of?(Array)
+          instr_spec.size.instance_of?(Array)
       # special case: no eamodes, but sizes defined
       instr_spec.size.each do |size|
         processor.process(instr_spec, size, :undef, 4, nil)
@@ -202,30 +209,30 @@ def create_instruction_objects(instr_specs, instr_template)
 end
 
 def read_template(template_filename)
-	template = ""
-	File.open(template_filename, "r") do |file|
-		file.each do |line|
-			template += line
-		end
+  template = ""
+  File.open(template_filename, "r") do |file|
+	file.each do |line|
+	  template += line
 	end
-	template
+  end
+  template
 end
 
 def generate_code(slim)
-	template = read_template(TEMPLATE)
-	if slim then
+  cpu_template = read_template(CPU_TEMPLATE)
+  if slim then
     instr_template = read_template(SLIM_INSTRUCTION_TEMPLATE)
-	else
+  else
     instr_template = read_template(INSTRUCTION_TEMPLATE)
-	end
+  end
   instr_specs = create_instr_specs
   instr_objects = create_instruction_objects(instr_specs, instr_template)
   init_instr_table = init_instruction_table(instr_specs)
-  template.gsub!('$HELPERS', generate_helpers)
-  template.gsub!('$INSTRUCTION_OBJECTS', instr_objects)
-  template.gsub!('$INIT_INSTRUCTION_TABLE', init_instr_table)
+  cpu_template.gsub!('$HELPERS', generate_helpers)
+  cpu_template.gsub!('$INSTRUCTION_OBJECTS', instr_objects)
+  cpu_template.gsub!('$INIT_INSTRUCTION_TABLE', init_instr_table)
   File.open(OUTPUT_FILE, "w") do |file|
-    file.puts("#{template}")
+    file.puts("#{cpu_template}")
   end
 end
 
@@ -234,8 +241,7 @@ end
 ######################################################################
 slim = false
 if ARGV.length > 0 and ARGV[0] == '-slim' then
-	slim = true
+  slim = true
 end
 
 code = generate_code(slim)
-

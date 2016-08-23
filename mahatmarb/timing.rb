@@ -166,55 +166,55 @@ ONE_CYCLES = {
 MOVE_CYCLES = {
   :bw => {
     :dn => {:dn => 4,:an => 4,:ai => 8,:ap => 8,:ar => 8,:ad => 12,
-      :ax => 12, :aw => 12, :al => 16},
+            :ax => 12, :aw => 12, :al => 16},
     :an => {:dn => 4,:an => 4,:ai => 8,:ap => 8,:ar => 8,:ad => 12,
-      :ax => 12, :aw => 12, :al => 16},
+            :ax => 12, :aw => 12, :al => 16},
     :ai => {:dn => 8,:an => 8,:ai => 12,:ap => 12,:ar => 12,:ad => 16,
-      :ax => 18, :aw => 16, :al => 20},
+            :ax => 18, :aw => 16, :al => 20},
     :ap => {:dn => 8,:an => 8,:ai => 12,:ap => 12,:ar => 12,:ad => 16,
-      :ax => 18, :aw => 16, :al => 20},
+            :ax => 18, :aw => 16, :al => 20},
     :ar => {:dn => 10,:an => 10,:ai => 14,:ap => 14,:ar => 14,:ad => 18,
-      :ax => 20, :aw => 18, :al => 22},
+            :ax => 20, :aw => 18, :al => 22},
     :ad => {:dn => 12,:an => 12,:ai => 16,:ap => 16,:ar => 16,:ad => 20,
-      :ax => 22, :aw => 20, :al => 24},
+            :ax => 22, :aw => 20, :al => 24},
     :ax => {:dn => 14,:an => 14,:ai => 18,:ap => 18,:ar => 18,:ad => 22,
-      :ax => 24, :aw => 22, :al => 26},
+            :ax => 24, :aw => 22, :al => 26},
     :aw => {:dn => 12,:an => 12,:ai => 16,:ap => 16,:ar => 16,:ad => 20,
-      :ax => 22, :aw => 20, :al => 24},
+            :ax => 22, :aw => 20, :al => 24},
     :al => {:dn => 16,:an => 16,:ai => 20,:ap => 20,:ar => 20,:ad => 24,
-      :ax => 26, :aw => 24, :al => 28},
+            :ax => 26, :aw => 24, :al => 28},
     :pd => {:dn => 12,:an => 12,:ai => 16,:ap => 16,:ar => 16,:ad => 20,
-      :ax => 22, :aw => 20, :al => 24},
+            :ax => 22, :aw => 20, :al => 24},
     :px => {:dn => 14,:an => 14,:ai => 18,:ap => 18,:ar => 18,:ad => 22,
-      :ax => 24, :aw => 22, :al => 26},
+            :ax => 24, :aw => 22, :al => 26},
     :im => {:dn => 8,:an => 8,:ai => 12,:ap => 12,:ar => 12,:ad => 16,
-      :ax => 18, :aw => 16, :al => 20}
+            :ax => 18, :aw => 16, :al => 20}
   },
   :l => {
     :dn => {:dn => 4,:an => 4,:ai => 12,:ap => 12,:ar => 14,:ad => 16,
-      :ax => 18, :aw => 16, :al => 20},
+            :ax => 18, :aw => 16, :al => 20},
     :an => {:dn => 4,:an => 4,:ai => 12,:ap => 12,:ar => 14,:ad => 16,
-      :ax => 18, :aw => 16, :al => 20},
+            :ax => 18, :aw => 16, :al => 20},
     :ai => {:dn => 12,:an => 12,:ai => 20,:ap => 20,:ar => 20,:ad => 24,
-      :ax => 26, :aw => 24, :al => 28},
+            :ax => 26, :aw => 24, :al => 28},
     :ap => {:dn => 12,:an => 12,:ai => 20,:ap => 20,:ar => 20,:ad => 24,
-      :ax => 26, :aw => 24, :al => 28},
+            :ax => 26, :aw => 24, :al => 28},
     :ar => {:dn => 14,:an => 14,:ai => 22,:ap => 22,:ar => 22,:ad => 26,
-      :ax => 28, :aw => 26, :al => 30},
+            :ax => 28, :aw => 26, :al => 30},
     :ad => {:dn => 16,:an => 16,:ai => 24,:ap => 24,:ar => 24,:ad => 28,
-      :ax => 30, :aw => 28, :al => 32},
+            :ax => 30, :aw => 28, :al => 32},
     :ax => {:dn => 18,:an => 18,:ai => 26,:ap => 26,:ar => 26,:ad => 30,
-      :ax => 32, :aw => 30, :al => 34},
+            :ax => 32, :aw => 30, :al => 34},
     :aw => {:dn => 16,:an => 16,:ai => 24,:ap => 24,:ar => 24,:ad => 28,
-      :ax => 30, :aw => 28, :al => 32},
+            :ax => 30, :aw => 28, :al => 32},
     :al => {:dn => 20,:an => 20,:ai => 28,:ap => 28,:ar => 28,:ad => 32,
-      :ax => 34, :aw => 32, :al => 36},
+            :ax => 34, :aw => 32, :al => 36},
     :pd => {:dn => 16,:an => 16,:ai => 24,:ap => 24,:ar => 24,:ad => 28,
-      :ax => 30, :aw => 28, :al => 32},
+            :ax => 30, :aw => 28, :al => 32},
     :px => {:dn => 18,:an => 18,:ai => 26,:ap => 26,:ar => 26,:ad => 30,
-      :ax => 32, :aw => 30, :al => 34},
+            :ax => 32, :aw => 30, :al => 34},
     :im => {:dn => 12,:an => 12,:ai => 20,:ap => 20,:ar => 20,:ad => 24,
-      :ax => 26, :aw => 24, :al => 28}
+            :ax => 26, :aw => 24, :al => 28}
   }
 }
 
@@ -285,11 +285,11 @@ end
 
 def add_eamode_cycles(base_cycles, mnemonic, cycle_size, eamode)
   if EA_CALC_CYCLES[eamode] != nil and
-      EA_CALC_CYCLES[eamode][cycle_size] != nil then
+    EA_CALC_CYCLES[eamode][cycle_size] != nil then
     ea_cycles = EA_CALC_CYCLES[eamode][cycle_size]
   else
     puts "WARNING: Could not calc. eacycles for " +
-      "#{mnemonic} #{eamode} (#{cycle_size})"
+         "#{mnemonic} #{eamode} (#{cycle_size})"
     ea_cycles = 0
   end
   base_cycles + ea_cycles

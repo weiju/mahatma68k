@@ -187,7 +187,7 @@ SUPERVISOR_INSTRUCTIONS = [
 # Branch conditionally does not have sizes, nor does it have effective
 # addresses - just condition code and 8/16-bit displacement
 ALL_CONDITION_CODES = [
-   :t,  :f, :hi, :ls, :cc, :cs, :ne, :eq, :vc, :vs, :pl, :mi, :ge,
+  :t,  :f, :hi, :ls, :cc, :cs, :ne, :eq, :vc, :vs, :pl, :mi, :ge,
   :lt, :gt, :le
 ]
 
@@ -286,63 +286,62 @@ OUT_DEFS = {
 
 # movem so far is the most complicated 68000 instruction.
 # movem memory -> register
-MOVEM_MEMTOREG =
-[
- "int reglistMask = mem.readShort(pc); pc += 2;",
- "int dregs[] = regnumsInMask(reglistMask & 0xff);",
- "int aregs[] = regnumsInMask((reglistMask >>> 8) & 0xff);",
- "IF_EAMODE(ap)", # we get the indirect address if eamode is postincrement
- "int baseAddress = getAddressRegisterIndirect();",
- "ELSE",
- "int baseAddress = GET_EFFECTIVE_ADDRESS;",
- "ENDIF",
- "for (int i = 0; i < dregs.length; i++) {",
- "  setDataRegisterValue(dregs[i], READ_MEMORY(baseAddress));",
- "  baseAddress += OPERAND_SIZE;",
- "}",
- "for (int i = 0; i < aregs.length; i++) {",
- "  setAddressRegisterValue(aregs[i], READ_MEMORY(baseAddress));",
- "  baseAddress += OPERAND_SIZE;",
- "}",
- "IF_EAMODE(ap)", # store updated address in base register
- "setAddressRegisterValue(getEffAddrRegnum(), baseAddress);",
- "ENDIF"
+MOVEM_MEMTOREG = [
+  "int reglistMask = mem.readShort(pc); pc += 2;",
+  "int dregs[] = regnumsInMask(reglistMask & 0xff);",
+  "int aregs[] = regnumsInMask((reglistMask >>> 8) & 0xff);",
+  "IF_EAMODE(ap)", # we get the indirect address if eamode is postincrement
+  "int baseAddress = getAddressRegisterIndirect();",
+  "ELSE",
+  "int baseAddress = GET_EFFECTIVE_ADDRESS;",
+  "ENDIF",
+  "for (int i = 0; i < dregs.length; i++) {",
+  "  setDataRegisterValue(dregs[i], READ_MEMORY(baseAddress));",
+  "  baseAddress += OPERAND_SIZE;",
+  "}",
+  "for (int i = 0; i < aregs.length; i++) {",
+  "  setAddressRegisterValue(aregs[i], READ_MEMORY(baseAddress));",
+  "  baseAddress += OPERAND_SIZE;",
+  "}",
+  "IF_EAMODE(ap)", # store updated address in base register
+  "setAddressRegisterValue(getEffAddrRegnum(), baseAddress);",
+  "ENDIF"
 ]
+
 # movem register -> memory is tricky in predecrement mode: everything
 # is reversed
-MOVEM_REGTOMEM =
-[
- "int reglistMask = mem.readShort(pc); pc += 2;",
- "IF_EAMODE(ar)",
- # we get the decremented indirect address and reverse the list and
- # processing order if eamode is predecrement
- "int baseAddress = getAddressRegisterIndirect();",
- "int aregs[] = regnumsInMaskRev(reglistMask & 0xff);",
- "int dregs[] = regnumsInMaskRev((reglistMask >>> 8) & 0xff);",
- "for (int i = 0; i < aregs.length; i++) {",
- "  baseAddress -= OPERAND_SIZE;",
- "  WRITE_MEMORY(baseAddress, getAddressRegisterValue(aregs[i]));",
- "}",
- "for (int i = 0; i < dregs.length; i++) {",
- "  baseAddress -= OPERAND_SIZE;",
- "  WRITE_MEMORY(baseAddress, getDataRegisterValue(dregs[i]));",
- "}",
- 
- # store the updated address in predecrement mode
- "setAddressRegisterValue(getEffAddrRegnum(), baseAddress);",
- "ELSE",
- "int dregs[] = regnumsInMask(reglistMask & 0xff);",
- "int aregs[] = regnumsInMask((reglistMask >>> 8) & 0xff);",
- "int baseAddress = GET_EFFECTIVE_ADDRESS;",
- "for (int i = 0; i < dregs.length; i++) {",
- "  WRITE_MEMORY(baseAddress, getDataRegisterValue(dregs[i]));",
- "  baseAddress += OPERAND_SIZE;",
- "}",
- "for (int i = 0; i < aregs.length; i++) {",
- "  WRITE_MEMORY(baseAddress, getAddressRegisterValue(aregs[i]));",
- "  baseAddress += OPERAND_SIZE;",
- "}",
- "ENDIF",
+MOVEM_REGTOMEM = [
+  "int reglistMask = mem.readShort(pc); pc += 2;",
+  "IF_EAMODE(ar)",
+  # we get the decremented indirect address and reverse the list and
+  # processing order if eamode is predecrement
+  "int baseAddress = getAddressRegisterIndirect();",
+  "int aregs[] = regnumsInMaskRev(reglistMask & 0xff);",
+  "int dregs[] = regnumsInMaskRev((reglistMask >>> 8) & 0xff);",
+  "for (int i = 0; i < aregs.length; i++) {",
+  "  baseAddress -= OPERAND_SIZE;",
+  "  WRITE_MEMORY(baseAddress, getAddressRegisterValue(aregs[i]));",
+  "}",
+  "for (int i = 0; i < dregs.length; i++) {",
+  "  baseAddress -= OPERAND_SIZE;",
+  "  WRITE_MEMORY(baseAddress, getDataRegisterValue(dregs[i]));",
+  "}",
+
+  # store the updated address in predecrement mode
+  "setAddressRegisterValue(getEffAddrRegnum(), baseAddress);",
+  "ELSE",
+  "int dregs[] = regnumsInMask(reglistMask & 0xff);",
+  "int aregs[] = regnumsInMask((reglistMask >>> 8) & 0xff);",
+  "int baseAddress = GET_EFFECTIVE_ADDRESS;",
+  "for (int i = 0; i < dregs.length; i++) {",
+  "  WRITE_MEMORY(baseAddress, getDataRegisterValue(dregs[i]));",
+  "  baseAddress += OPERAND_SIZE;",
+  "}",
+  "for (int i = 0; i < aregs.length; i++) {",
+  "  WRITE_MEMORY(baseAddress, getAddressRegisterValue(aregs[i]));",
+  "  baseAddress += OPERAND_SIZE;",
+  "}",
+  "ENDIF",
 ]
 
 # Instructions, defining it this way has the advantage that we
@@ -354,9 +353,9 @@ INSTR_CODE = {
                   "setAddressRegisterValueL(getRegnum(), src + dest);"
                  ],
   :addi       => ["int src = GET_IMMEDIATE_VALUE;",
-                 "int dest = GET_EFFADDR_VALUE_STORE;",
-                 "int result = ADD(src, dest);",
-                 "SET_EFFADDR_VALUE(result);"
+                  "int dest = GET_EFFADDR_VALUE_STORE;",
+                  "int result = ADD(src, dest);",
+                  "SET_EFFADDR_VALUE(result);"
                  ],
   :add_dnea   => ["int src = GET_DATA_REGISTER;",
                   "int dest = GET_EFFADDR_VALUE_STORE;",
@@ -373,7 +372,7 @@ INSTR_CODE = {
                   "if (src == 0) src = 8;",
                   "int result = ADD(src, dest);",
                   "SET_EFFADDR_VALUE(result);"
-                ],
+                 ],
   :andi      => ["int src = GET_IMMEDIATE_VALUE;",
                  "int dest = GET_EFFADDR_VALUE_STORE;",
                  "int result = AND(src, dest);",
@@ -642,8 +641,8 @@ INSTR_CODE = {
                     "} else privilegeViolation();"
                    ],
   :move_to_sr  => ["if (isSupervisorMode()) {",
-                    "  sr = GET_EFFADDR_VALUE;",
-                    "} else privilegeViolation();"
+                   "  sr = GET_EFFADDR_VALUE;",
+                   "} else privilegeViolation();"
                   ],
   :move_from_usp => ["if (isSupervisorMode()) {",
                      "  int usp = getUserStackPointerValue();",
@@ -782,8 +781,7 @@ INSTR_CODE = {
                  "int displacement = getDisplacement();",
                  "if (result) pc = basepc + displacement;"
                 ],
-  :dbcc      => [
-                 "boolean result = CC_CHECK; ",
+  :dbcc      => ["boolean result = CC_CHECK; ",
                  "int basepc = pc;",
                  "int displacement = getAbsoluteShort();",
                  "if (!result) {",
@@ -804,9 +802,9 @@ INSTR_CODE = {
                  "}"
                 ],
   :unlk      => ["setStackPointerValue(getAddressRegisterValueL" +
-                    "(getEffAddrRegnum()));",
+                 "(getEffAddrRegnum()));",
                  "setAddressRegisterValueL(getEffAddrRegnum()," +
-                   " mem.readLong(getStackPointerValueL()));",
+                 " mem.readLong(getStackPointerValueL()));",
                  "incrementStackPointer(4);"
                 ],
 }
@@ -816,13 +814,13 @@ EAMODE_SPECIAL = 7
 
 # mapping from eamode symbols to their equivalent 3-bit values
 EAMODE_PATTERNS = {
-	:dn => 0, :an => 1, :ai => 2, :ap => 3, :ar => 4, :ad => 5, :ax => 6,
-	:aw => 7, :al => 7, :pd => 7, :px => 7, :im => 7
+  :dn => 0, :an => 1, :ai => 2, :ap => 3, :ar => 4, :ad => 5, :ax => 6,
+  :aw => 7, :al => 7, :pd => 7, :px => 7, :im => 7
 }
 
 # for special mode, returns the regnum value for the addressing mode
 EAMODE_SPECIAL_REGNUM = {
-	:aw => 0, :al => 1, :pd => 2, :px => 3, :im => 4
+  :aw => 0, :al => 1, :pd => 2, :px => 3, :im => 4
 }
 
 # sizes
@@ -845,7 +843,7 @@ OPMODE2     = { :b => 4, :w => 5, :l => 6 }
 # data structure to define a regular instruction
 class InstructionSpec
   attr_accessor :mnemonic, :size, :base_value, :eamodes, :varpatterns,
-  :eamodes_ext, :out_spec
+                :eamodes_ext, :out_spec
 
   def initialize(mnemonic, size, base_value, varpatterns, eamodes,
                  eamodes_ext)
@@ -868,19 +866,27 @@ EAMODES_POS  = 3
 # processes an instruction definition and creates
 # and InstructionSpec object
 PATTERN_SYMBOL_EASKIP = {
-  ?a => [:aregnum, 2], ?d => [:dregnum, 2], ?e => [:effaddr, 5],
-  ?E => [:effaddr_rev, 5], ?m => [:opmode, 2], ?s => [:size, 1],
-  ?v => [:data, 2], ?D => [:displacement, 7], ?f => [:effaddr_dregnum, 2],
-  ?F => [:effaddr_aregnum, 2], ?t => [:trap_vector, 3]
+  ?a => [:aregnum, 2],
+  ?d => [:dregnum, 2],
+  ?e => [:effaddr, 5],
+  ?E => [:effaddr_rev, 5],
+  ?m => [:opmode, 2],
+  ?s => [:size, 1],
+  ?v => [:data, 2],
+  ?D => [:displacement, 7],
+  ?f => [:effaddr_dregnum, 2],
+  ?F => [:effaddr_aregnum, 2],
+  ?t => [:trap_vector, 3]
 }
+
 def extract_spec(instr_def)
   mnemonic = instr_def[MNEMONIC_POS]
   pattern =  instr_def[PATTERN_POS]
   varpatterns = []
   varpos = {}
-	# there could be two eamode specs in an instruction, eamode_num
-	# stores whether it is the first or second eamode spec
-	eamode_num = 0
+  # there could be two eamode specs in an instruction, eamode_num
+  # stores whether it is the first or second eamode spec
+  eamode_num = 0
   # build base pattern
   base_value = 0
   i = 0
@@ -890,7 +896,7 @@ def extract_spec(instr_def)
     base_value <<= 1
     skip = 0
     if char == ?1 then
-      base_value |= 1
+         base_value |= 1
     elsif char == ?0 then
       # do nothing
     else
@@ -900,16 +906,16 @@ def extract_spec(instr_def)
     i += (1 + skip)
     base_value <<= skip
   end
-	eamodes = instr_def[EAMODES_POS]
-	puts "processing: #{instr_def[MNEMONIC_POS]}:#{pattern} baseval: #{base_value} varpatterns: [#{varpatterns.join(',')}]..."
+  eamodes = instr_def[EAMODES_POS]
+  puts "processing: #{instr_def[MNEMONIC_POS]}:#{pattern} baseval: #{base_value} varpatterns: [#{varpatterns.join(',')}]..."
 
   allowed_eamodes = instr_def[EAMODES_POS][0]
   allowed_eamodes_ext = nil
   if instr_def[EAMODES_POS].length > 1 then
     allowed_eamodes_ext = instr_def[EAMODES_POS][1]
   end
-  
-	instr_spec = InstructionSpec.new(mnemonic, instr_def[SIZE_POS],
+
+  instr_spec = InstructionSpec.new(mnemonic, instr_def[SIZE_POS],
                                    base_value,
                                    varpatterns, allowed_eamodes,
                                    allowed_eamodes_ext)
@@ -923,7 +929,7 @@ end
 def create_instr_specs()
   instr_specs = []
   INSTR_DEFS.each do |instr_def|
-		instr_specs <<= extract_spec(instr_def)
+	instr_specs <<= extract_spec(instr_def)
   end
   instr_specs
 end
